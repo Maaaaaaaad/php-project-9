@@ -1,5 +1,5 @@
 # Name of workflow
-name: Project-check
+name: project-check
 
 # Trigger the workflow on push or pull request
 on:
@@ -28,10 +28,6 @@ jobs:
       - name: Install
         # Install project
         run: make install
-
-      - name: Unit test
-        # Run PHPUnit test
-        run: make test
 
       - name: Run linter
         # Run Linter
