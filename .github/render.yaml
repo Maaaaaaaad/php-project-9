@@ -1,0 +1,9 @@
+# Exported from Render on 2024-09-06T13:19:48Z
+services:
+- type: web
+  name: php-project-9
+  runtime: static
+  repo: https://github.com/Maaaaaaaad/php-project-9
+  buildCommand: make start
+  staticPublishPath: ./
+version: "1"
