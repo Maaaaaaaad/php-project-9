@@ -6,32 +6,30 @@ use DI\Container;
 use Slim\Factory\AppFactory;
 use Slim\Middleware\MethodOverrideMiddleware;
 
-
-var_dump($_ENV);
-
-var_dump($_SERVER);
-
-var_dump($_SESSION);
-
-
-/*$pdo = new \PDO("pgsql:localhost:5432/Hexlet;user=Mad;password=799142");
-$pdo->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);*/
-
-/*$dsn = 'postgresql:dbname=Hexlet;host=localhos';
-$user = 'Mad';
-$password = '799142';
-
-$dbh = new PDO($dsn, $user, $password);
-
-var_dump($dbh);*/
+$databaseUrl = parse_url($_ENV['DATABASE_URL']);
+$username = $databaseUrl['user'];
+$password = $databaseUrl['pass'];
+$host = $databaseUrl['host'];
+$port = $databaseUrl['port'];
+$dbName = ltrim($databaseUrl['path'], '/');
 
 
-/*$databaseUrl = parse_url($_ENV['DATABASE_URL']);
-$username = $databaseUrl['user']; // janedoe
-$password = $databaseUrl['pass']; // mypassword
-$host = $databaseUrl['host']; // localhost
-$port = $databaseUrl['port']; // 5432
-$dbName = ltrim($databaseUrl['path'], '/'); // mydb*/
+$conStr = sprintf(
+    "pgsql:host=%s;port=%d;dbname=%s;user=%s;password=%s",
+    $host,
+    $port,
+    $dbName,
+    $username,
+    $password
+);
+
+$pdo = new \PDO($conStr);
+$pdo->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
+
+dump($pdo);
+
+
+
 
 /*$container = new Container();
 $container->set('renderer', function () {
