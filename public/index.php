@@ -11,7 +11,6 @@ use Slim\Middleware\MethodOverrideMiddleware;
 
 
 $databaseUrl = parse_url($url);
-
 $username = $databaseUrl['user'];
 $password = $databaseUrl['pass'];
 $host = $databaseUrl['host'];
@@ -36,15 +35,6 @@ $conStr = sprintf(
 );
 
 
-try {
-    $pdo = new \PDO($conStr);
-    $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-    echo 'A connection to the PostgreSQL database sever has been established successfully.';
-} catch (\PDOException $e) {
-    echo $e->getMessage();
-}
-
-
 
 $container = new Container();
 $container->set('renderer', function () {
@@ -61,6 +51,17 @@ $app->get('/', function ($request, $response) {
     return $this->get('renderer')->render($response, 'index.phtml');
 });
 
+
+
+AppFactory::setContainer($container);
+$app = AppFactory::create();
+$app->add(MethodOverrideMiddleware::class);
+$app->addErrorMiddleware(true, true, true);
+
+$app->get('/', function ($request, $response) {
+
+    return $this->get('renderer')->render($response, 'index.phtml');
+});
 
 
 $app->run();
