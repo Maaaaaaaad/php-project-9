@@ -6,26 +6,28 @@ use DI\Container;
 use Slim\Factory\AppFactory;
 use Slim\Middleware\MethodOverrideMiddleware;
 
-$url = [
-    "scheme" => "postgresql",
-    "host" => "dpg-crg1fi3qf0us73desm50-a",
-    "user" => "mad",
-    "pass" => "l5HOcwzap3wrbBZ5NJCZouZRgOiPf6g5",
-    "path"=> "hexlet_bfjd"
-];
 
-var_dump($_ENV['DATABASE_URL']);
+/*$url ="postgresql://Mad:799142@localhost:5432/Hexlet";
 
-//{ ["scheme"]=> string(10) "postgresql" ["host"]=> string(26) "dpg-crg1fi3qf0us73desm50-a" ["user"]=> string(3) "mad" ["pass"]=> string(32) "l5HOcwzap3wrbBZ5NJCZouZRgOiPf6g5" ["path"]=> string(12) "/hexlet_bfjd" }
+
+$databaseUrl = parse_url($url);
+$username = $databaseUrl['user'];
+$password = $databaseUrl['pass'];
+$host = $databaseUrl['host'];
+$port = $databaseUrl['port'];
+$dbName = ltrim($databaseUrl['path'], '/');*/
+
+dump($_ENV['DATABASE_URL']);
+
+dump(parse_url($_ENV['DATABASE_URL']));
+
+
 $databaseUrl = parse_url($_ENV['DATABASE_URL']);
 $username = $databaseUrl['user'];
 $password = $databaseUrl['pass'];
 $host = $databaseUrl['host'];
-$port = 5432;
+$port = $databaseUrl['port'];
 $dbName = ltrim($databaseUrl['path'], '/');
-
-
-
 
 $conStr = sprintf("pgsql:host=%s;port=%d;dbname=%s;user=%s;password=%s",
     $host,
@@ -41,6 +43,7 @@ $conStr = sprintf("pgsql:host=%s;port=%d;dbname=%s;user=%s;password=%s",
 $pdo = new \PDO($conStr);
 $pdo->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
 
+var_dump($pdo);
 
 
 
