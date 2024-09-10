@@ -11,23 +11,20 @@ use Slim\Middleware\MethodOverrideMiddleware;
 
 
 $databaseUrl = parse_url($url);
+
 $username = $databaseUrl['user'];
 $password = $databaseUrl['pass'];
 $host = $databaseUrl['host'];
 $port = $databaseUrl['port'];
 $dbName = ltrim($databaseUrl['path'], '/');*/
 
-dump($_ENV['DATABASE_URL']);
-
-dump(parse_url($_ENV['DATABASE_URL']));
-
-
 $databaseUrl = parse_url($_ENV['DATABASE_URL']);
 $username = $databaseUrl['user'];
 $password = $databaseUrl['pass'];
 $host = $databaseUrl['host'];
-$port = $databaseUrl['port'];
+$port = 5432;
 $dbName = ltrim($databaseUrl['path'], '/');
+
 
 $conStr = sprintf("pgsql:host=%s;port=%d;dbname=%s;user=%s;password=%s",
     $host,
@@ -38,16 +35,17 @@ $conStr = sprintf("pgsql:host=%s;port=%d;dbname=%s;user=%s;password=%s",
 );
 
 
+try {
+    $pdo = new \PDO($conStr);
+    $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+    echo 'A connection to the PostgreSQL database sever has been established successfully.';
+} catch (\PDOException $e) {
+    echo $e->getMessage();
+}
 
 
-$pdo = new \PDO($conStr);
-$pdo->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
 
-var_dump($pdo);
-
-
-
-/*$container = new Container();
+$container = new Container();
 $container->set('renderer', function () {
     return new \Slim\Views\PhpRenderer(__DIR__ . '/../templates');
 });
@@ -64,4 +62,4 @@ $app->get('/', function ($request, $response) {
 
 
 
-$app->run();*/
+$app->run();
