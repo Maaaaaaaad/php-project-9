@@ -6,11 +6,13 @@ use DI\Container;
 use Slim\Factory\AppFactory;
 use Slim\Middleware\MethodOverrideMiddleware;
 
+
+
 $databaseUrl = parse_url($_ENV['DATABASE_URL']);
 $username = $databaseUrl['user'];
 $password = $databaseUrl['pass'];
 $host = $databaseUrl['host'];
-$port = $databaseUrl['port'];
+$port = 5432;
 $dbName = ltrim($databaseUrl['path'], '/');
 
 
@@ -22,6 +24,9 @@ $conStr = sprintf(
     $username,
     $password
 );
+
+var_dump($conStr);
+
 
 $pdo = new \PDO($conStr);
 $pdo->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
