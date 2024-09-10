@@ -53,14 +53,9 @@ $app->get('/', function ($request, $response) {
 
 
 
-AppFactory::setContainer($container);
-$app = AppFactory::create();
-$app->add(MethodOverrideMiddleware::class);
-$app->addErrorMiddleware(true, true, true);
+$app->get('/urls', function ($request, $response) {
 
-$app->get('/', function ($request, $response) {
-
-    return $this->get('renderer')->render($response, 'index.phtml');
+    return $this->get('renderer')->render($response, 'urls.phtml');
 });
 
 
