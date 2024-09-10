@@ -22,11 +22,12 @@ $databaseUrl = parse_url($_ENV['DATABASE_URL']);
 $username = $databaseUrl['user'];
 $password = $databaseUrl['pass'];
 $host = $databaseUrl['host'];
-$port = 5432;
+$port = $databaseUrl['port'];
 $dbName = ltrim($databaseUrl['path'], '/');
 
 
-$conStr = sprintf("pgsql:host=%s;port=%d;dbname=%s;user=%s;password=%s",
+$conStr = sprintf(
+    "pgsql:host=%s;port=%d;dbname=%s;user=%s;password=%s",
     $host,
     $port,
     $dbName,
