@@ -7,31 +7,30 @@ use Slim\Factory\AppFactory;
 use Slim\Middleware\MethodOverrideMiddleware;
 
 
-
 $databaseUrl = parse_url($_ENV['DATABASE_URL']);
 $username = $databaseUrl['user'];
 $password = $databaseUrl['pass'];
 $host = $databaseUrl['host'];
-$port = 5432;
+$port = $databaseUrl['port'];
 $dbName = ltrim($databaseUrl['path'], '/');
 
+var_dump(parse_url($_ENV['DATABASE_URL']));
+var_dump($databaseUrl['port']);
+var_dump($_ENV['DATABASE_URL']);
 
-$conStr = sprintf(
-    "pgsql:host=%s;port=%d;dbname=%s;user=%s;password=%s",
+
+$conStr = sprintf("pgsql:host=%s;port=5432;dbname=%s;user=%s;password=%s",
     $host,
-    $port,
     $dbName,
     $username,
     $password
 );
 
-var_dump($conStr);
+
 
 
 $pdo = new \PDO($conStr);
 $pdo->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
-
-dump($pdo);
 
 
 
