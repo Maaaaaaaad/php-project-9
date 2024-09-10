@@ -6,6 +6,14 @@ use DI\Container;
 use Slim\Factory\AppFactory;
 use Slim\Middleware\MethodOverrideMiddleware;
 
+
+var_dump($_ENV);
+
+var_dump($_SERVER);
+
+var_dump($_SESSION);
+
+
 /*$pdo = new \PDO("pgsql:localhost:5432/Hexlet;user=Mad;password=799142");
 $pdo->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);*/
 
@@ -17,11 +25,6 @@ $dbh = new PDO($dsn, $user, $password);
 
 var_dump($dbh);*/
 
-var_dump($_ENV);
-
-var_dump($_SERVER);
-
-var_dump($_SESSION);
 
 /*$databaseUrl = parse_url($_ENV['DATABASE_URL']);
 $username = $databaseUrl['user']; // janedoe
