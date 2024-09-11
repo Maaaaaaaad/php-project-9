@@ -36,12 +36,31 @@
             <table class="table table-bordered table-hover text-nowrap" data-test="urls">
                 <thead>
                 <tr>
+
                     <th>ID</th>
                     <th>Имя</th>
                     <th>Последняя проверка</th>
                     <th>Код ответа</th>
                 </tr>
+
+
+
                 </thead>
+
+                <tbody>
+
+                <?php foreach ($repo as $value) : ?>
+                <tr>
+                    <td><?php echo $value['id'] ?></td>
+                    <td>  <a href="/urls/<?php echo $value['id']?>"><?php echo $value['name'] ?></td>
+                    <th></th>
+                    <th></th>
+                </tr>
+                <?php endforeach ?>
+
+
+                </tbody>
+
             </table>
         </div>
     </div>
@@ -59,3 +78,5 @@
 </body>
 
 </html>
+
+

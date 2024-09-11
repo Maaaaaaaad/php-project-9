@@ -16,10 +16,10 @@ dump:
 	composer dump-autoload
 
 lint:
-	composer exec --verbose phpcs -- --standard=PSR12 --colors public
+	composer exec --verbose phpcs -- --standard=PSR12 --colors public src
 
 lint-fix:
-	composer exec --verbose phpcbf -- --standard=PSR12 --colors public
+	composer exec --verbose phpcbf -- --standard=PSR12 --colors public src
 
 test:
 	composer exec --verbose phpunit tests
