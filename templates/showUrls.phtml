@@ -11,41 +11,40 @@
     <nav class="navbar navbar-expand navbar-dark bg-dark" aria-label="Second navbar example">
         <div class="container-fluid">
             <a class="navbar-brand" href="/">Анализатор страниц</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample02" aria-controls="navbarsExample02" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample02" aria-controls="navbarsExample02" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
             <div class="collapse navbar-collapse" id="navbarsExample02">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/">Главная</a>
+                        <a class="nav-link" aria-current="page" href="/">Главная</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/urls">Сайты</a>
+                        <a class="nav-link active" href="/urls">Сайты</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
 </header>
-
+<div class="alert alert-success" role="alert"><?= $messages['success'][0] ?></div>
 <main class="flex-grow-1">
     <div class="container-lg mt-3">
-        <h1>Сайт: <?php echo $name ?></h1>
+        <h1>Сайт: <?= $name ?></h1>
         <div class="table-responsive">
             <table class="table table-bordered table-hover text-nowrap" data-test="url">
                 <tbody>
                 <tr>
                     <td>ID</td>
-                    <td><?php echo $id ?></td>
+                    <td><?= $id ?></td>
                 </tr>
                 <tr>
                     <td>Имя</td>
-                    <td><?php echo $name ?></td>
+                    <td><?= $name ?></td>
                 </tr>
                 <tr>
                     <td>Дата создания</td>
-                    <td><?php echo $created ?></td>
+                    <td><?= $created ?></td>
                 </tr>
                 </tbody>
             </table>
@@ -56,17 +55,17 @@
         </form>
         <table class="table table-bordered table-hover" data-test="checks">
             <thead>
-            <tr>
-                <th>ID</th>
-                <th>Код ответа</th>
-                <th>h1</th>
-                <th>title</th>
-                <th>description</th>
-                <th>Дата создания</th>
-            </tr>
+                <tr>
+                    <th>ID</th>
+                    <th>Код ответа</th>
+                    <th>h1</th>
+                    <th>title</th>
+                    <th>description</th>
+                    <th>Дата создания</th>
+                </tr>
             </thead>
             <tbody>
-            <!--?php foreach ($checks as $check): ?-->
+
             </tbody>
         </table>
     </div>
@@ -75,7 +74,7 @@
 <footer class="border-top py-3 mt-5 flex-shrink-0">
     <div class="container-lg">
         <div class="text-center">
-            <a href="/" class="nav-link px-2 text-body-secondary">Hexlet</a>
+            <a href="https://hexlet.io/pages/about" target="_blank">Hexlet</a>
         </div>
     </div>
 </footer>
@@ -83,3 +82,6 @@
 </body>
 
 </html>
+
+
+

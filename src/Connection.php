@@ -17,29 +17,12 @@ final class Connection
      */
     public function connect()
     {
-        // чтение параметров в файле конфигурации ini
-/*        $params = parse_ini_file('database.ini');
-        if ($params === false) {
-            throw new \Exception("Error reading database configuration file");
-        }*/
         $databaseUrl = parse_url($_ENV['DATABASE_URL']);
-
         $username = $databaseUrl['user'];
         $password = $databaseUrl['pass'];
         $host = $databaseUrl['host'];
         $port = $databaseUrl['port'];
         $dbName = ltrim($databaseUrl['path'], '/');
-
-
-        // подключение к базе данных postgresql
-/*        $conStr = sprintf(
-            "pgsql:host=%s;port=%d;dbname=%s;user=%s;password=%s",
-            $params['host'],
-            $params['port'],
-            $params['database'],
-            $params['user'],
-            $params['password']
-        );*/
 
         $conStr = sprintf(
             "pgsql:host=%s;port=%d;dbname=%s;user=%s;password=%s",
@@ -49,6 +32,21 @@ final class Connection
             $username,
             $password
         );
+
+/*        $params = parse_ini_file('database.ini');
+        if ($params === false) {
+            throw new \Exception("Error reading database configuration file");
+        }
+
+        $conStr = sprintf(
+            "pgsql:host=%s;port=%d;dbname=%s;user=%s;password=%s",
+            $params['host'],
+            $params['port'],
+            $params['database'],
+            $params['user'],
+            $params['password']
+        );*/
+
 
         $pdo = new \PDO($conStr);
         $pdo->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);

@@ -10,35 +10,7 @@ use App\Url;
 use App\Urls;
 use Slim\Flash;
 
-/*
-$url ="postgresql://Mad:799142@localhost:5432/Hexlet";
-
-
-$databaseUrl = parse_url($url);
-$username = $databaseUrl['user'];
-$password = $databaseUrl['pass'];
-$host = $databaseUrl['host'];
-$port = $databaseUrl['port'];
-$dbName = ltrim($databaseUrl['path'], '/');
-
-$databaseUrl = parse_url($_ENV['DATABASE_URL']);
-$username = $databaseUrl['user'];
-$password = $databaseUrl['pass'];
-$host = $databaseUrl['host'];
-$port = $databaseUrl['port'];
-$dbName = ltrim($databaseUrl['path'], '/');
-
-
-$conStr = sprintf(
-    "pgsql:host=%s;port=%d;dbname=%s;user=%s;password=%s",
-    $host,
-    $port,
-    $dbName,
-    $username,
-    $password
-);
-*/
-
+session_start();
 
 $container = new Container();
 $container->set('renderer', function () {
@@ -49,75 +21,16 @@ $container->set('flash', function () {
     return new Slim\Flash\Messages();
 });
 
-AppFactory::setContainer($container);
-$app = AppFactory::create();
+
+$app = AppFactory::createFromContainer($container);
 $app->add(MethodOverrideMiddleware::class);
 $app->addErrorMiddleware(true, true, true);
 
 $router = $app->getRouteCollector()->getRouteParser();
 
 $app->get('/', function ($request, $response) use ($router) {
-
     return $this->get('renderer')->render($response, 'index.phtml');
 })->setName('Home');
-
-
-$app->post('/', function ($request, $response, array $args) use ($router) {
-
-    $urlName = $request->getParsedBodyParam('url');
-    $validator = new Valitron\Validator($urlName);
-
-    $pdo = Connection::get()->connect();
-    $urls = new Urls($pdo);
-
-
-    $validator->rules([
-        'url' => ['name'],
-        'required' => ['name']
-    ]);
-
-    if ($validator->validate()) {
-        if (!$urls->findName($urlName['name'])) {
-            //$this->get('flash')->addMessage('success', 'Страница успешно добавлена');
-            $url = new Url($urlName['name']);
-            $urls->save($url);
-            $id = $url->getId();
-            return $response->withHeader('X-ID', $id)
-                ->withRedirect($router->urlFor('showUrl'));
-        } /*else {
-            // $this->get('flash')->addMessage('success', 'Страница уже существует');
-        }*/
-    }
-});
-/*
-
-    } else {
-        $errors [] = $validator->errors();
-    }
-
-
-
-
-/*
-            $urlName['name'] = $postData['name'];
-            $this->get('flash')->addMessage('success', 'Post has been updated');
-            $repo->save($post);
-            return $response->withRedirect($router->urlFor('posts'));
-    }
-
-    $params = [
-        'post' => $post,
-        'postData' => $postData,
-        'errors' => $errors
-    ];
-
-    return $this->get('renderer')->render($response, 'index.phtml');*/
-
-
-
-
-
-
 
 $app->get('/urls', function ($request, $response) use ($router) {
 
@@ -125,8 +38,6 @@ $app->get('/urls', function ($request, $response) use ($router) {
     $urls = new Urls($pdo);
 
     $repo = $urls->getEntities();
-
-
     $params = [
         'repo' => $repo
     ];
@@ -135,24 +46,59 @@ $app->get('/urls', function ($request, $response) use ($router) {
 })->setName('urls');
 
 
-$app->get('/urls/{id}', function ($request, $response, array $args) use ($router) {
+$app->post('/urls', function ($request, $response, array $args) use ($router) {
 
+    $pdo = Connection::get()->connect();
+    $urlName = $request->getParsedBodyParam('url');
+
+    $urls = new Urls($pdo);
+
+    $validator = new Valitron\Validator($urlName);
+    $validator->rule('url', 'name')->message('Некорректный URL');
+    $validator->rule('lengthMax', 'name', 255)->message('Некорректный URL');
+    $validator->rule('required', 'name')->message('URL не должен быть пустым');
+
+
+    if ($validator->validate()) {
+        if (!$urls->findName($urlName['name'])) {
+            $this->get('flash')->addMessage('success', 'Страница успешно добавлена');
+            $url = new Url($urlName['name']);
+            $urls->save($url);
+            $id = $urls->findName($urlName['name']);
+            return $response->withRedirect($router->urlFor('showUrl', $id));
+        } else {
+            $this->get('flash')->addMessage('success', 'Страница уже существует');
+            $id = $urls->findName($urlName['name']);
+            return $response->withRedirect($router->urlFor('showUrl', $id));
+        }
+    } else {
+        $error = $validator->errors();
+        $params = [
+            'errors' => $error['name'],
+            'name' => $urlName['name']
+        ];
+
+        return $this->get('renderer')->render($response->withStatus(422), 'index.phtml', $params);
+    }
+})->setName('saveUrl');
+
+
+$app->get('/urls/{id}', function ($request, $response, $args) use ($router) {
+
+    $messages = $this->get('flash')->getMessages();
     $pdo = Connection::get()->connect();
     $urls = new Urls($pdo);
 
     $url = $urls->findId($args['id']);
 
-
     $params = [
         'id' => $url['id'],
         'name' => $url['name'],
-        'created' => $url['created_at']
+        'created' => $url['created_at'],
+        'messages' => $messages
     ];
-
 
     return $this->get('renderer')->render($response, 'showUrls.phtml', $params);
 })->setName('showUrl');
-
-
 
 $app->run();

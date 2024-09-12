@@ -52,26 +52,6 @@ class Urls
             $course->setId($row['id']);
             $result[] = $course;
         }
-
-
         return $result;
     }
-
-/*    public function getEntities()
-    {
-        $result = [];
-        $sql = "SELECT * FROM courses ORDER BY id";
-        $stmt = $this->pdo->query($sql);
-
-        while ($row = $stmt->fetch()) {
-            $course = new Course(
-                $row['name'],
-                $row['description']
-            );
-            $course->setId($row['id']);
-            $result[] = $course;
-        }
-
-        return $result;
-    }*/
 }
