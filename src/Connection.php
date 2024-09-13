@@ -17,7 +17,7 @@ final class Connection
      */
     public function connect()
     {
-        $databaseUrl = parse_url($_ENV['DATABASE_URL']);
+/*        $databaseUrl = parse_url($_ENV['DATABASE_URL']);
         $username = $databaseUrl['user'];
         $password = $databaseUrl['pass'];
         $host = $databaseUrl['host'];
@@ -31,9 +31,9 @@ final class Connection
             $dbName,
             $username,
             $password
-        );
+        );*/
 
-/*        $params = parse_ini_file('database.ini');
+        $params = parse_ini_file('database.ini');
         if ($params === false) {
             throw new \Exception("Error reading database configuration file");
         }
@@ -45,7 +45,7 @@ final class Connection
             $params['database'],
             $params['user'],
             $params['password']
-        );*/
+        );
 
 
         $pdo = new \PDO($conStr);

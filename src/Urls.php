@@ -46,11 +46,11 @@ class Urls
         $stmt = $this->pdo->query($sql);
         $result = $stmt->fetchAll();
         while ($row = $stmt->fetch()) {
-            $course = new Url(
+            $urls = new Url(
                 $row['name'],
             );
-            $course->setId($row['id']);
-            $result[] = $course;
+            $urls->setId($row['id']);
+            $result[] = $urls;
         }
         return $result;
     }

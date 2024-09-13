@@ -9,6 +9,7 @@ use App\Connection;
 use App\Url;
 use App\Urls;
 use Slim\Flash;
+use App\UrlCheck;
 
 session_start();
 
@@ -88,17 +89,48 @@ $app->get('/urls/{id}', function ($request, $response, $args) use ($router) {
     $messages = $this->get('flash')->getMessages();
     $pdo = Connection::get()->connect();
     $urls = new Urls($pdo);
+    $check = new UrlCheck($pdo);
 
     $url = $urls->findId($args['id']);
+    $urlCheck = $check->getCheck($args['id']);
+
+
+    foreach ($urlCheck as $value) {
+        $checks[] = [
+            'checkId' => $value['id'],
+            'checkCreat' => $value['created_at']
+        ];
+    }
 
     $params = [
         'id' => $url['id'],
         'name' => $url['name'],
         'created' => $url['created_at'],
-        'messages' => $messages
+        'messages' => $messages,
+        'checks' => $checks
+
+
     ];
 
     return $this->get('renderer')->render($response, 'showUrls.phtml', $params);
 })->setName('showUrl');
+
+
+
+$app->post('/urls/{id}/checks', function ($request, $response, $args) use ($router) {
+
+    $id = $args['id'];
+    $pdo = Connection::get()->connect();
+
+    $urls = new Urls($pdo);
+    $url = $urls->findId($id);
+
+
+    $check = new UrlCheck($pdo);
+    $check->check($id);
+
+
+    return $response->withRedirect($router->urlFor('showUrl', $url));
+})->setName('checkUrl');
 
 $app->run();
