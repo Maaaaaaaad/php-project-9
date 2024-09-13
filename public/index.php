@@ -37,10 +37,20 @@ $app->get('/urls', function ($request, $response) use ($router) {
 
     $pdo = Connection::get()->connect();
     $urls = new Urls($pdo);
+    $check = new UrlCheck($pdo);
 
     $repo = $urls->getEntities();
+
+    foreach ($repo as $value) {
+        $repos[] = [
+            'id' => $value['id'],
+            'name' => $value['name'],
+            'last_check' => $check->getlastCheck($value['id'])
+        ];
+    }
+
     $params = [
-        'repo' => $repo
+        'repo' => $repos,
     ];
 
     return $this->get('renderer')->render($response, 'urls.phtml', $params);
@@ -92,8 +102,9 @@ $app->get('/urls/{id}', function ($request, $response, $args) use ($router) {
     $check = new UrlCheck($pdo);
 
     $url = $urls->findId($args['id']);
-    $urlCheck = $check->getCheck($args['id']);
+    $urlCheck = $check->getChecks($args['id']);
 
+    $checks = [];
 
     foreach ($urlCheck as $value) {
         $checks[] = [
@@ -108,8 +119,6 @@ $app->get('/urls/{id}', function ($request, $response, $args) use ($router) {
         'created' => $url['created_at'],
         'messages' => $messages,
         'checks' => $checks
-
-
     ];
 
     return $this->get('renderer')->render($response, 'showUrls.phtml', $params);

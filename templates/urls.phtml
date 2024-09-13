@@ -44,14 +44,14 @@
                 <tbody>
                 <?php foreach ($repo as $value) : ?>
                     <tr>
+
                         <td><?= $value['id'] ?></td>
                         <td><a href="/urls/<?= $value['id'] ?>"><?= $value['name'] ?></td>
-                        <th></th>
-                        <th></th>
+                        <td><?= $value['last_check']['created_at'] ?></td>
+                        <td></td>
                     </tr>
                 <?php endforeach ?>
                 </tbody>
-
             </table>
         </div>
     </div>
