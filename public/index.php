@@ -35,6 +35,8 @@ $app->get('/', function ($request, $response) use ($router) {
 
 $app->get('/urls', function ($request, $response) use ($router) {
 
+    $messages = $this->get('flash')->getMessages();
+
     $pdo = Connection::get()->connect();
     $urls = new Urls($pdo);
     $check = new UrlCheck($pdo);
@@ -50,7 +52,7 @@ $app->get('/urls', function ($request, $response) use ($router) {
     }
 
     $params = [
-        'repo' => $repos,
+        'repo' => $repos
     ];
 
     return $this->get('renderer')->render($response, 'urls.phtml', $params);
@@ -138,6 +140,7 @@ $app->post('/urls/{id}/checks', function ($request, $response, $args) use ($rout
     $check = new UrlCheck($pdo);
     $check->check($id);
 
+    $this->get('flash')->addMessage('success', 'Страница успешно проверена');
 
     return $response->withRedirect($router->urlFor('showUrl', $url));
 })->setName('checkUrl');
