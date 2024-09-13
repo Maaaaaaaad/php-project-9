@@ -35,8 +35,6 @@ $app->get('/', function ($request, $response) use ($router) {
 
 $app->get('/urls', function ($request, $response) use ($router) {
 
-    $messages = $this->get('flash')->getMessages();
-
     $pdo = Connection::get()->connect();
     $urls = new Urls($pdo);
     $check = new UrlCheck($pdo);
