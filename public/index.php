@@ -144,7 +144,7 @@ $app->post('/urls/{id}/checks', function ($request, $response, $args) use ($rout
     $urls = new Urls($pdo);
     $url = $urls->findId($id);
     $checkUrl = new Check($url['id']);
-
+    $error = null;
 
     $client =  new Client(['verify' => false,]);
 
