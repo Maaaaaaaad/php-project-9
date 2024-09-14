@@ -20,8 +20,8 @@ final class Connection
     public function connect()
     {
 
-        $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../', '.env');
-        $dotenv->load();
+ /*       $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../', '.env');
+        $dotenv->load();*/
 
         $databaseUrl = parse_url($_ENV['DATABASE_URL']);
         $username = $databaseUrl['user'];
