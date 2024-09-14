@@ -3,6 +3,7 @@
 namespace App;
 
 use Carbon\Carbon;
+use GuzzleHttp\Client;
 
 class UrlCheck
 {
@@ -13,15 +14,19 @@ class UrlCheck
         $this->pdo = $pdo;
     }
 
-    public function check(int $urlId): void
+    public function setCheck(Check $check): void
     {
-        $sql = "INSERT INTO url_checks (url_id, created_at) VALUES (?, ?)";
+        $sql = "INSERT INTO url_checks (url_id, status_code ,created_at) VALUES (?,?, ?)";
         $stmt = $this->pdo->prepare($sql);
-        $urlCreated = Carbon::now()->toDateTimeString();
-        $stmt->bindParam(1, $urlId);
-        $stmt->bindParam(2, $urlCreated);
+        $urlID = $check->getUrlId();
+        $statusCode = $check->getSastusCode();
+        $urlCreated = $check->getCreated();
+        $stmt->bindParam(1, $urlID);
+        $stmt->bindParam(2, $statusCode);
+        $stmt->bindParam(3, $urlCreated);
         $stmt->execute();
-        //$id = (int) $this->pdo->lastInsertId();
+        $id = (int) $this->pdo->lastInsertId();
+        $check->setId($id);
     }
 
     public function getChecks($id)
@@ -34,7 +39,15 @@ class UrlCheck
 
     public function getlastCheck($id)
     {
-        $sql = "SELECT created_at FROM url_checks WHERE url_id = ?";
+        $sql = "SELECT created_at FROM url_checks WHERE url_id = ? ORDER BY created_at DESC limit 1";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$id]);
+        return $stmt->fetch();
+    }
+
+    public function getStatusCode($id)
+    {
+        $sql = "SELECT status_code FROM url_checks WHERE url_id = ? ORDER BY created_at DESC limit 1";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([$id]);
         return $stmt->fetch();

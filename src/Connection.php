@@ -2,6 +2,8 @@
 
 namespace App;
 
+use Dotenv;
+
 final class Connection
 {
     /**
@@ -17,6 +19,10 @@ final class Connection
      */
     public function connect()
     {
+
+        $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../', '.env');
+        $dotenv->load();
+
         $databaseUrl = parse_url($_ENV['DATABASE_URL']);
         $username = $databaseUrl['user'];
         $password = $databaseUrl['pass'];

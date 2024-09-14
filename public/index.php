@@ -2,7 +2,13 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+use App\Check;
 use DI\Container;
+
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ConnectException;
+use GuzzleHttp\Promise\CancellationException;
 use Slim\Factory\AppFactory;
 use Slim\Middleware\MethodOverrideMiddleware;
 use App\Connection;
@@ -45,7 +51,8 @@ $app->get('/urls', function ($request, $response) use ($router) {
         $repos[] = [
             'id' => $value['id'],
             'name' => $value['name'],
-            'last_check' => $check->getlastCheck($value['id'])
+            'last_check' => $check->getlastCheck($value['id']),
+            'code' => $check->getStatusCode($value['id'])
         ];
     }
 
@@ -104,14 +111,17 @@ $app->get('/urls/{id}', function ($request, $response, $args) use ($router) {
     $url = $urls->findId($args['id']);
     $urlCheck = $check->getChecks($args['id']);
 
-    $checks = [];
-
     foreach ($urlCheck as $value) {
         $checks[] = [
             'checkId' => $value['id'],
+            'code' => $value['status_code'],
+            'h1' => '',
+            'title' => '',
+            'desc' => '',
             'checkCreat' => $value['created_at']
         ];
     }
+
 
     $params = [
         'id' => $url['id'],
@@ -133,12 +143,29 @@ $app->post('/urls/{id}/checks', function ($request, $response, $args) use ($rout
 
     $urls = new Urls($pdo);
     $url = $urls->findId($id);
+    $checkUrl = new Check($url['id']);
 
 
-    $check = new UrlCheck($pdo);
-    $check->check($id);
+    $client =  new Client(['verify' => false,]);
 
-    $this->get('flash')->addMessage('success', 'Страница успешно проверена');
+
+    try {
+        $resp = $client->request('GET', $url['name']);
+        $code = $resp->getStatusCode();
+    } catch (ConnectException | ClientException | CancellationException $e) {
+        $error = $e;
+    }
+
+
+    if (is_null($error)) {
+        $checkUrl->setSastusCode($code);
+        $check = new UrlCheck($pdo);
+        $check->setCheck($checkUrl);
+        $this->get('flash')->addMessage('success', 'Страница успешно проверена');
+    } elseif (!is_null($error)) {
+        $this->get('flash')->addMessage('error', 'Произошла ошибка при проверке, не удалось подключиться');
+    }
+
 
     return $response->withRedirect($router->urlFor('showUrl', $url));
 })->setName('checkUrl');

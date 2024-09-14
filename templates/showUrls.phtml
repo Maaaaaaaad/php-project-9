@@ -29,8 +29,8 @@
 </header>
 <?php if (isset($messages['success'])): ?>
     <div class="alert alert-success" role="alert"><?= $messages['success'][0] ?></div>
-<?php else: ?>
-
+<?php elseif (isset($messages['error'])): ?>
+    <div class="alert alert-danger" role="alert"><?= $messages['error'][0] ?></div>
 <?php endif; ?>
 
 <main class="flex-grow-1">
@@ -73,7 +73,7 @@
             <?php foreach ($checks as $key => $value) : ?>
                 <tr>
                     <td><?= $value['checkId'] ?></td>
-                    <td></td>
+                    <td><?= $value['code'] ?></td>
                     <td></td>
                     <td></td>
                     <td></td>
