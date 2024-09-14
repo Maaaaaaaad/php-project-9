@@ -38,17 +38,19 @@ $app->addErrorMiddleware(true, true, true);
 
 $router = $app->getRouteCollector()->getRouteParser();
 
-$app->get('/', function ($request, $response) use ($router) {
+$app->get('/', function ($request, $response) {
     return $this->get('renderer')->render($response, 'index.phtml');
 })->setName('Home');
 
-$app->get('/urls', function ($request, $response) use ($router) {
+$app->get('/urls', function ($request, $response) {
 
     $pdo = Connection::get()->connect();
     $urls = new Urls($pdo);
     $check = new UrlCheck($pdo);
 
     $repo = $urls->getEntities();
+
+    $repos = [];
 
     foreach ($repo as $value) {
         $repos[] = [
@@ -104,7 +106,7 @@ $app->post('/urls', function ($request, $response, array $args) use ($router) {
 })->setName('saveUrl');
 
 
-$app->get('/urls/{id}', function ($request, $response, $args) use ($router) {
+$app->get('/urls/{id}', function ($request, $response, $args) {
 
     $messages = $this->get('flash')->getMessages();
     $pdo = Connection::get()->connect();
@@ -113,6 +115,8 @@ $app->get('/urls/{id}', function ($request, $response, $args) use ($router) {
 
     $url = $urls->findId($args['id']);
     $urlCheck = $check->getChecks($args['id']);
+
+    $checks = [];
 
     foreach ($urlCheck as $value) {
         $checks[] = [
@@ -164,23 +168,17 @@ $app->post('/urls/{id}/checks', function ($request, $response, $args) use ($rout
 
         $document = new Document($url['name'], true);
 
-
-
-
         $title = optional($document->first('title'));
         $h1 = optional($document->first('h1'));
         $description = optional($document->first('meta[name=description]'));
-
         $checkUrl->setTitle($title->text());
         $checkUrl->setH1($h1->text());
         $checkUrl->setDescription($description->getAttribute('content'));
 
-
-
         $check->setCheck($checkUrl);
 
         $this->get('flash')->addMessage('success', 'Страница успешно проверена');
-    } elseif (!is_null($error)) {
+    } else {
         $this->get('flash')->addMessage('error', 'Произошла ошибка при проверке, не удалось подключиться');
     }
 

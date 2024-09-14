@@ -6,11 +6,11 @@ use Carbon\Carbon;
 
 class Url
 {
-    private $id;
-    private $name;
-    private $created;
+    private int $id ;
+    private string $name;
+    private string $created;
 
-    public function __construct($name)
+    public function __construct(string $name)
     {
         $this->name = $name;
         $this->created = Carbon::now()->toDateTimeString();
@@ -22,18 +22,14 @@ class Url
         return $this->name;
     }
 
-    public function getCreated()
+    public function getCreated(): string
     {
         return $this->created;
     }
 
-    public function setId($id)
+    public function setId($id): void
     {
         $this->id = $id;
     }
 
-    public function getId()
-    {
-        return $this->id;
-    }
 }

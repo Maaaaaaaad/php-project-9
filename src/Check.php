@@ -6,13 +6,13 @@ use Carbon\Carbon;
 
 class Check
 {
-    private $id;
-    private $urlId;
-    private $sastusCode;
-    private $h1;
-    private $title;
-    private $description;
-    private $created;
+    private int $id;
+    private int $urlId;
+    private int $statusCode;
+    private string $h1;
+    private string $title;
+    private string $description;
+    private string $created;
 
     public function __construct($id)
     {
@@ -41,9 +41,9 @@ class Check
         return $this->id;
     }
 
-    public function getSastusCode()
+    public function getStatusCode()
     {
-        return $this->sastusCode;
+        return $this->statusCode;
     }
 
     public function getTitle()
@@ -57,37 +57,37 @@ class Check
     }
 
 
-    public function setCreated(string $created)
+    public function setCreated(string $created): void
     {
         $this->created = $created;
     }
 
-    public function setDescription($description)
+    public function setDescription($description): void
     {
         $this->description = $description;
     }
 
-    public function setH1($h1)
+    public function setH1($h1): void
     {
         $this->h1 = $h1;
     }
 
-    public function setId($id)
+    public function setId($id): void
     {
         $this->id = $id;
     }
 
-    public function setStatusCode($sastusCode)
+    public function setStatusCode($sastusCode): void
     {
-        $this->sastusCode = $sastusCode;
+        $this->statusCode = $sastusCode;
     }
 
-    public function setTitle($title)
+    public function setTitle($title): void
     {
         $this->title = $title;
     }
 
-    public function setUrlId($urlId)
+    public function setUrlId($urlId): void
     {
         $this->urlId = $urlId;
     }

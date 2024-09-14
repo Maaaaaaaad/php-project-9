@@ -7,7 +7,13 @@ use GuzzleHttp\Client;
 
 class UrlCheck
 {
-    private $pdo;
+    private \PDO $pdo;
+
+    /**
+     * Подключение к базе данных и возврат экземпляра объекта \PDO
+     * @return \PDO
+     * @throws \Exception
+     */
 
     public function __construct(\PDO $pdo)
     {
@@ -21,11 +27,13 @@ class UrlCheck
         $stmt = $this->pdo->prepare($sql);
 
         $urlID = $check->getUrlId();
-        $statusCode = $check->getSastusCode();
+        $statusCode = $check->getStatusCode();
         $h1 = $check->getH1();
         $urlCreated = $check->getCreated();
         $title = $check->getTitle();
         $description = $check->getDescription();
+
+
 
         $stmt->bindParam(1, $urlID);
         $stmt->bindParam(2, $statusCode);
@@ -38,7 +46,7 @@ class UrlCheck
         $check->setId($id);
     }
 
-    public function getChecks($id)
+    public function getChecks($id): false|array
     {
         $sql = "SELECT * FROM url_checks WHERE url_id = ?";
         $stmt = $this->pdo->prepare($sql);
@@ -46,7 +54,7 @@ class UrlCheck
         return $stmt->fetchAll();
     }
 
-    public function getlastCheck($id)
+    public function getlastCheck($id): mixed
     {
         $sql = "SELECT created_at FROM url_checks WHERE url_id = ? ORDER BY created_at DESC limit 1";
         $stmt = $this->pdo->prepare($sql);
@@ -54,7 +62,7 @@ class UrlCheck
         return $stmt->fetch();
     }
 
-    public function getStatusCode($id)
+    public function getStatusCode($id): mixed
     {
         $sql = "SELECT status_code FROM url_checks WHERE url_id = ? ORDER BY created_at DESC limit 1";
         $stmt = $this->pdo->prepare($sql);

@@ -4,6 +4,10 @@ namespace App;
 
 class Urls
 {
+    /**
+     * Urls
+     * тип @var
+     */
     private $pdo;
 
     public function __construct(\PDO $pdo)
