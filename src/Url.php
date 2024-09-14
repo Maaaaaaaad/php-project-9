@@ -31,5 +31,4 @@ class Url
     {
         $this->id = $id;
     }
-
 }
