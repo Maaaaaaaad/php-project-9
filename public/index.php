@@ -12,6 +12,7 @@ use GuzzleHttp\Promise\CancellationException;
 use Slim\Factory\AppFactory;
 use Slim\Middleware\MethodOverrideMiddleware;
 use DiDom\Document;
+use Valitron\Validator;
 use Illuminate\Support;
 use App\Connection;
 use App\Url;
@@ -73,7 +74,7 @@ $app->post('/urls', function ($request, $response, array $args) use ($router) {
 
     $urls = new Urls($pdo);
 
-    $validator = new Valitron\Validator($urlName);
+    $validator = new Validator($urlName);
     $validator->rule('url', 'name')->message('Некорректный URL');
     $validator->rule('lengthMax', 'name', 255)->message('Некорректный URL');
     $validator->rule('required', 'name')->message('URL не должен быть пустым');
