@@ -11,6 +11,8 @@ use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Promise\CancellationException;
 use Slim\Factory\AppFactory;
 use Slim\Middleware\MethodOverrideMiddleware;
+use DiDom\Document;
+use Illuminate\Support;
 use App\Connection;
 use App\Url;
 use App\Urls;
@@ -115,9 +117,9 @@ $app->get('/urls/{id}', function ($request, $response, $args) use ($router) {
         $checks[] = [
             'checkId' => $value['id'],
             'code' => $value['status_code'],
-            'h1' => '',
-            'title' => '',
-            'desc' => '',
+            'h1' => $value['h1'],
+            'title' => $value['title'],
+            'description' => $value['description'],
             'checkCreat' => $value['created_at']
         ];
     }
@@ -148,7 +150,6 @@ $app->post('/urls/{id}/checks', function ($request, $response, $args) use ($rout
 
     $client =  new Client(['verify' => false,]);
 
-
     try {
         $resp = $client->request('GET', $url['name']);
         $code = $resp->getStatusCode();
@@ -156,11 +157,27 @@ $app->post('/urls/{id}/checks', function ($request, $response, $args) use ($rout
         $error = $e;
     }
 
-
     if (is_null($error)) {
-        $checkUrl->setSastusCode($code);
+        $checkUrl->setStatusCode($code);
         $check = new UrlCheck($pdo);
+
+        $document = new Document($url['name'], true);
+
+
+
+
+        $title = optional($document->first('title'));
+        $h1 = optional($document->first('h1'));
+        $description = optional($document->first('meta[name=description]'));
+
+        $checkUrl->setTitle($title->text());
+        $checkUrl->setH1($h1->text());
+        $checkUrl->setDescription($description->getAttribute('content'));
+
+
+
         $check->setCheck($checkUrl);
+
         $this->get('flash')->addMessage('success', 'Страница успешно проверена');
     } elseif (!is_null($error)) {
         $this->get('flash')->addMessage('error', 'Произошла ошибка при проверке, не удалось подключиться');

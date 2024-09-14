@@ -16,14 +16,23 @@ class UrlCheck
 
     public function setCheck(Check $check): void
     {
-        $sql = "INSERT INTO url_checks (url_id, status_code ,created_at) VALUES (?,?, ?)";
+        $sql = "INSERT INTO url_checks (url_id, status_code, h1, title, description, created_at) 
+        VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = $this->pdo->prepare($sql);
+
         $urlID = $check->getUrlId();
         $statusCode = $check->getSastusCode();
+        $h1 = $check->getH1();
         $urlCreated = $check->getCreated();
+        $title = $check->getTitle();
+        $description = $check->getDescription();
+
         $stmt->bindParam(1, $urlID);
         $stmt->bindParam(2, $statusCode);
-        $stmt->bindParam(3, $urlCreated);
+        $stmt->bindParam(3, $h1);
+        $stmt->bindParam(4, $title);
+        $stmt->bindParam(5, $description);
+        $stmt->bindParam(6, $urlCreated);
         $stmt->execute();
         $id = (int) $this->pdo->lastInsertId();
         $check->setId($id);
