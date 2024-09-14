@@ -1,4 +1,4 @@
-<html lang="ru">
+<html>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -28,9 +28,9 @@
     </nav>
 </header>
 <?php if (isset($messages['success'])): ?>
-    <div class="alert alert-success" role="alert"><?= $messages['success'][0] ?></div>
+    <div class="alert alert-success" role="alert"> <?= $messages['success'][0] ?></div>
 <?php elseif (isset($messages['error'])): ?>
-    <div class="alert alert-danger" role="alert"><?= $messages['error'][0] ?></div>
+    <div class="alert alert-danger" role="alert"> <?= $messages['error'][0] ?></div>
 <?php endif; ?>
 
 <main class="flex-grow-1">
