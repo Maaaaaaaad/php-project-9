@@ -1,3 +1,4 @@
 /vendor/
 Flood.php
-/src/database.ini
+/src/database.ini\
+.env
