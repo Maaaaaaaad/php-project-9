@@ -45,13 +45,13 @@ class UrlCheck
         $check->setId($id);
     }
 
-    public function getChecks(int $id): null|array
+    public function getChecks(int $id): array|null
     {
         $sql = "SELECT * FROM url_checks WHERE url_id = ?";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([$id]);
         $result = $stmt->fetchAll();
-
+        $end = [];
         foreach ($result as $value) {
             $course = $value;
             $end[] = $course;

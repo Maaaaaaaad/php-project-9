@@ -57,7 +57,7 @@ class Check
     }
 
 
-    public function setCreated(string|null $created): void
+    public function setCreated(mixed $created): void
     {
         $this->created = $created;
     }
