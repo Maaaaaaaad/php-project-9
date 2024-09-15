@@ -97,7 +97,6 @@ $app->post('/urls', function ($request, $response, array $args) use ($router) {
         }
     } else {
         $error = $validator->errors();
-        dump($urlName);
         $params = [
             'errors' => $error['name'],
             'name' => $urlName['name']
