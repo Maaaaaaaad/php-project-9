@@ -172,10 +172,11 @@ $app->post('/urls/{id}/checks', function ($request, $response, $args) use ($rout
         $h1 = optional($document->first('h1'));
         $description = $document->first('meta[name=description]');
 
-        if ( isset($description)) {
+        if (isset($description)) {
             $description1 = $description->getAttribute('content');
-        } else
+        } else {
             $description1 = null;
+        }
 
 
 
