@@ -46,4 +46,13 @@ class Urls
         $stmt = $this->pdo->query($sql);
         return $stmt->fetchAll();
     }
+
+/*    public function getID(string $name): array
+    {
+        $result = [];
+        $sql = "SELECT id FROM urls WHERE name = ?";
+        $stmt = $this->pdo->prepare($sql);
+        $result[] = $stmt->execute([$name]);
+        return $result;
+    }*/
 }

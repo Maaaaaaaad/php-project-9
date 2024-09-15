@@ -41,7 +41,7 @@
                         <label for="text" class="visually-hidden"> Url для проверки </label>
                         <?php if (isset($errors)): ?>
                             <input type="text" name="url[name]" value="<?= htmlspecialchars($name ?? '') ?>" class="form-control form-control-lg is-invalid" placeholder="https://www.example.com">
-                            <div class="invalid-feedback"><?= $errors ?></div>
+                            <div class="invalid-feedback"><?= $errors['name'][0] ?></div>
                         <?php else: ?>
                             <input type="text" name="url[name]" value="<?= htmlspecialchars($name ?? '') ?>" class="form-control form-control-lg" placeholder="https://www.example.com">
                         <?php endif; ?>
