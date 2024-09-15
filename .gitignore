@@ -1,4 +1,4 @@
 /vendor/
 Flood.php
 /src/database.ini\
-etc/secrets/.env
+.env

@@ -87,6 +87,7 @@ $app->post('/urls', function ($request, $response, array $args) use ($router) {
             $this->get('flash')->addMessage('success', 'Страница успешно добавлена');
             $url = new Url($urlName['name']);
             $urls->save($url);
+            $id = [];
             $id = $urls->findName($urlName['name']);
             return $response->withRedirect($router->urlFor('showUrl', $id));
         } else {
@@ -96,6 +97,7 @@ $app->post('/urls', function ($request, $response, array $args) use ($router) {
         }
     } else {
         $error = $validator->errors();
+        dump($urlName);
         $params = [
             'errors' => $error['name'],
             'name' => $urlName['name']
@@ -128,7 +130,6 @@ $app->get('/urls/{id}', function ($request, $response, $args) {
             'checkCreat' => $value['created_at']
         ];
     }
-
 
     $params = [
         'id' => $url['id'],
@@ -170,10 +171,21 @@ $app->post('/urls/{id}/checks', function ($request, $response, $args) use ($rout
 
         $title = optional($document->first('title'));
         $h1 = optional($document->first('h1'));
-        $description = optional($document->first('meta[name=description]'));
+        $description = $document->first('meta[name=description]');
+
+        if ( isset($description)) {
+            $description1 = $description->getAttribute('content');
+        } else
+            $description1 = null;
+
+
+
         $checkUrl->setTitle($title->text());
         $checkUrl->setH1($h1->text());
-        $checkUrl->setDescription($description->getAttribute('content'));
+        $checkUrl->setDescription($description1);
+
+
+
 
         $check->setCheck($checkUrl);
 

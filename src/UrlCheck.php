@@ -33,8 +33,6 @@ class UrlCheck
         $title = $check->getTitle();
         $description = $check->getDescription();
 
-
-
         $stmt->bindParam(1, $urlID);
         $stmt->bindParam(2, $statusCode);
         $stmt->bindParam(3, $h1);
@@ -42,19 +40,26 @@ class UrlCheck
         $stmt->bindParam(5, $description);
         $stmt->bindParam(6, $urlCreated);
         $stmt->execute();
+
         $id = (int) $this->pdo->lastInsertId();
         $check->setId($id);
     }
 
-    public function getChecks($id): false|array
+    public function getChecks(int $id): null|array
     {
         $sql = "SELECT * FROM url_checks WHERE url_id = ?";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([$id]);
-        return $stmt->fetchAll();
+        $result = $stmt->fetchAll();
+
+        foreach ($result as $value) {
+            $course = $value;
+            $end[] = $course;
+        }
+        return $end;
     }
 
-    public function getlastCheck($id): mixed
+    public function getlastCheck(int $id): mixed
     {
         $sql = "SELECT created_at FROM url_checks WHERE url_id = ? ORDER BY created_at DESC limit 1";
         $stmt = $this->pdo->prepare($sql);
@@ -62,7 +67,7 @@ class UrlCheck
         return $stmt->fetch();
     }
 
-    public function getStatusCode($id): mixed
+    public function getStatusCode(int $id): mixed
     {
         $sql = "SELECT status_code FROM url_checks WHERE url_id = ? ORDER BY created_at DESC limit 1";
         $stmt = $this->pdo->prepare($sql);

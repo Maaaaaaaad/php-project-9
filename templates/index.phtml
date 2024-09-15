@@ -21,7 +21,7 @@
                         <a class="nav-link active" aria-current="page" href="/"> Главная </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/urls">Сайты</a>
+                        <a class="nav-link" href="/urls"> Сайты </a>
                     </li>
                 </ul>
             </div>
@@ -34,11 +34,11 @@
         <h1></h1>
         <div class="row">
             <div class="col-12 col-md-10 col-lg-8 mx-auto border rounded-3 bg-light p-5">
-                <h1 class="display-3"> Анализатор страниц</h1>
-                <p class="lead"> Бесплатно проверяйте сайты на SEO пригодность</p>
+                <h1 class="display-3"> Анализатор страниц </h1>
+                <p class="lead"> Бесплатно проверяйте сайты на SEO пригодность </p>
                 <form action="/urls" method="post" class="row" required="">
                     <div class="col-8">
-                        <label for="text" class="visually-hidden"> Url для проверки</label>
+                        <label for="text" class="visually-hidden"> Url для проверки </label>
                         <?php if (isset($errors)): ?>
                             <input type="text" name="url[name]" value="<?= htmlspecialchars($name ?? '') ?>" class="form-control form-control-lg is-invalid" placeholder="https://www.example.com">
                             <div class="invalid-feedback"><?= array_pop($errors) ?></div>
@@ -58,7 +58,7 @@
 <footer class="border-top py-3 mt-5 flex-shrink-0">
     <div class="container-lg">
         <div class="text-center">
-            <a href="https://hexlet.io/pages/about" target="_blank">Hexlet</a>
+            <a href="https://hexlet.io/pages/about" target="_blank"> Hexlet </a>
         </div>
     </div>
 </footer>

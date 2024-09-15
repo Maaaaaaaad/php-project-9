@@ -17,7 +17,7 @@ class Url
     }
 
 
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -27,8 +27,16 @@ class Url
         return $this->created;
     }
 
-    public function setId($id): void
+    public function setId(int $id): void
     {
         $this->id = $id;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
     }
 }

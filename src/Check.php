@@ -9,12 +9,12 @@ class Check
     private int $id;
     private int $urlId;
     private int $statusCode;
-    private string $h1;
-    private string $title;
-    private string $description;
+    private string|null $h1;
+    private string|null $title;
+    private string|null $description;
     private string $created;
 
-    public function __construct($id)
+    public function __construct(int $id)
     {
         $this->urlId = $id;
         $this->created = Carbon::now()->toDateTimeString();
@@ -57,37 +57,37 @@ class Check
     }
 
 
-    public function setCreated(string $created): void
+    public function setCreated(string|null $created): void
     {
         $this->created = $created;
     }
 
-    public function setDescription($description): void
+    public function setDescription(string|null $description): void
     {
         $this->description = $description;
     }
 
-    public function setH1($h1): void
+    public function setH1(string|null $h1): void
     {
         $this->h1 = $h1;
     }
 
-    public function setId($id): void
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
 
-    public function setStatusCode($sastusCode): void
+    public function setStatusCode(int $statusCode): void
     {
-        $this->statusCode = $sastusCode;
+        $this->statusCode = $statusCode;
     }
 
-    public function setTitle($title): void
+    public function setTitle(string|null $title): void
     {
         $this->title = $title;
     }
 
-    public function setUrlId($urlId): void
+    public function setUrlId(int $urlId): void
     {
         $this->urlId = $urlId;
     }
