@@ -24,7 +24,7 @@ class Urls
         $url->setId($id);
     }
 
-    public function findName(string $name)
+    public function findName(string $name): array
     {
         $sql = "SELECT * FROM urls WHERE name = ?";
         $stmt = $this->pdo->prepare($sql);
