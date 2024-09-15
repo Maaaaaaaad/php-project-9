@@ -41,18 +41,17 @@ class Urls
     }
     public function getEntities()
     {
-
         $sql = "SELECT * FROM urls";
         $stmt = $this->pdo->query($sql);
         return $stmt->fetchAll();
     }
 
-/*    public function getID(string $name): array
+    public function getID(string $name): array
     {
         $result = [];
         $sql = "SELECT id FROM urls WHERE name = ?";
         $stmt = $this->pdo->prepare($sql);
-        $result[] = $stmt->execute([$name]);
-        return $result;
-    }*/
+        $stmt->execute([$name]);
+        return $stmt->fetch();
+    }
 }
