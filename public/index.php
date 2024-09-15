@@ -90,17 +90,18 @@ $app->post('/urls', function ($request, $response, array $args) use ($router) {
 
             $id[] = $urls->findName($urlName['name']);
 
-            return $response->withRedirect($router->urlFor('showUrl', $id[0]));
+            return $response->withRedirect($router->urlFor('showUrl', $id));
         } else {
             $this->get('flash')->addMessage('success', 'Страница уже существует');
             $id[] = $urls->findName($urlName['name']);
 
-            return $response->withRedirect($router->urlFor('showUrl', $id[0]));
+            return $response->withRedirect($router->urlFor('showUrl', $id));
         }
     } else {
         $error = $validator->errors();
+        dump($error);
         $params = [
-            'errors' => $error['name'],
+            'errors' => $error['name'][0],
             'name' => $urlName['name']
         ];
 

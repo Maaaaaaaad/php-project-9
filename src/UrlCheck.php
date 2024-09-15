@@ -45,7 +45,7 @@ class UrlCheck
         $check->setId($id);
     }
 
-    public function getChecks(int $id): array|null
+    public function getChecks(int $id): mixed
     {
         $sql = "SELECT * FROM url_checks WHERE url_id = ?";
         $stmt = $this->pdo->prepare($sql);
